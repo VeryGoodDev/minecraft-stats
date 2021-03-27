@@ -8,7 +8,10 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, `preload.js`),
     },
+    title: `Minecraft Stats`,
   })
+  // NOTE: If I find a need for the menu bar, it can be kept and hidden with autoHideMenuBar: true in the BrowserWindow constructor
+  win.removeMenu()
   win.loadFile(`index.html`)
 }
 app.whenReady().then(() => {
