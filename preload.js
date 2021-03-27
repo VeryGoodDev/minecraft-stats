@@ -4,6 +4,7 @@ const fs = require(`fs`).promises
 const MC_PATH = path.resolve(`/Users/Kenobi/AppData/Roaming/.minecraft`)
 const MC_SAVES_PATH = path.join(MC_PATH, `/saves`)
 
+// TODO: Want to render a Preact app to make multiple views easier with routing
 window.addEventListener(`DOMContentLoaded`, async () => {
   console.log(window.location.href)
   const container = document.querySelector(`.dynamic`)
