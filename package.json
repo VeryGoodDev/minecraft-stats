@@ -1,0 +1,26 @@
+{
+  "name": "minecraft-stats",
+  "version": "0.1.0",
+  "description": "Just messing around with doing things with the stats you get in a Minecraft world",
+  "main": "main.js",
+  "repository": "https://github.com/verygooddev/minecraft-stats",
+  "author": "VeryGoodDev <very_good_dev@outlook.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint **/*.js",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^12.0.2",
+    "eslint": "^7",
+    "eslint-config-personal": "github:verygooddev/eslint-config-personal"
+  },
+  "eslintConfig": {
+    "extends": [
+      "personal"
+    ]
+  },
+  "dependencies": {
+    "colors": "^1.4.0"
+  }
+}
