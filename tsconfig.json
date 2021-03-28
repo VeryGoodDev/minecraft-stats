@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
-    /* Basic Options */
+    // Basic Options
     "module": "commonjs",
     "newLine": "lf",
     "outDir": "build",
     "rootDir": ".",
     "target": "ESNext",
 
-    /* Strict Type-Checking Options */
-    "strict": true,
+    // Strict Type-Checking Options
     "esModuleInterop": true,
+    "strict": true,
 
-    /* Advanced Options */
-    "skipLibCheck": true,
+    // Advanced Options
     "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    // JSX Options
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
   },
 }

@@ -3,8 +3,10 @@ const path = require(`path`)
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 900,
+    height: 720,
+    minWidth: 350,
+    minHeight: 300,
     webPreferences: {
       preload: path.join(__dirname, `build/electron/preload.js`),
     },
@@ -12,7 +14,8 @@ function createWindow() {
   })
   // NOTE: If I find a need for the menu bar, it can be kept and hidden with autoHideMenuBar: true in the BrowserWindow constructor
   // win.removeMenu()
-  win.loadFile(`index.html`)
+  // win.loadFile(`index.html`)
+  win.loadURL(`./build/src/index.js`)
 }
 app.whenReady().then(() => {
   createWindow()

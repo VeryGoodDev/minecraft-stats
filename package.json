@@ -27,6 +27,12 @@
   "eslintConfig": {
     "extends": [
       "personal"
-    ]
+    ],
+    "settings": {
+      "react": {
+        "pragma": "h",
+        "fragment": "Fragment"
+      }
+    }
   }
 }
