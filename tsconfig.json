@@ -4,7 +4,6 @@
     "module": "commonjs",
     "newLine": "lf",
     "outDir": "build",
-    "rootDir": ".",
     "target": "ESNext",
 
     // Strict Type-Checking Options
@@ -16,9 +15,9 @@
     "skipLibCheck": true,
 
     // JSX Options
-    "jsx": "react",
+    "jsx": "preserve",
+    "jsxImportSource": "preact",
     "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment",
-
+    "jsxFragmentFactory": "Fragment"
   }
 }
