@@ -11,22 +11,16 @@ interface IndexItem {
 interface IndexFileStructure {
   objects: Record<string, IndexItem>
 }
-interface LanguageInfo {
-  iso: string
-  languageName: string
-  translationFileName?: string
-  jarVersion?: string
-}
 
 export function getSupportedVersions(): Promise<string[]> {
-  const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH)
+  const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH) as string
   return fsPromises
     .readdir(path.join(minecraftPath, `/versions`))
     .then((versions) => versions.filter((version) => isVanillaVersion(version)))
 }
 export async function getSupportedLanguages(): Promise<Record<string, LanguageInfo>> {
-  const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH)
-  const minecraftVersion = getConfigItem(configKeys.MINECRAFT_VERSION).replace(/^(1\.\d+).*$/, `$1`)
+  const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH) as string
+  const minecraftVersion = (getConfigItem(configKeys.MINECRAFT_VERSION) as string).replace(/^(1\.\d+).*$/, `$1`)
   const languageNames: Record<string, string> = await fsPromises
     .readFile(path.resolve(__dirname, `../../electron/assets/lang-names.json`))
     .then((rawFile: Buffer) => JSON.parse(rawFile.toString()))
@@ -62,8 +56,8 @@ async function getLanguagesFromIndexFile(
 async function getLanguagesFromMinecraftJar(
   languageNames: Record<string, string>
 ): Promise<Record<string, LanguageInfo>> {
-  const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH)
-  const minecraftVersion = getConfigItem(configKeys.MINECRAFT_VERSION)
+  const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH) as string
+  const minecraftVersion = getConfigItem(configKeys.MINECRAFT_VERSION) as string
   const jarPath = path.join(minecraftPath, `/versions`, minecraftVersion, `${minecraftVersion}.jar`)
   const langPath = `assets/minecraft/lang/*.json`
   try {

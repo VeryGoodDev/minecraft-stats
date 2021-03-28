@@ -1,3 +1,9 @@
+interface LanguageInfo {
+  iso: string
+  languageName: string
+  translationFileName?: string
+  jarVersion?: string
+}
 declare var configApi: {
   getConfigItem<T>(key: string): T
   updateConfigItem<T>(key: string, value: T): Promise<void>

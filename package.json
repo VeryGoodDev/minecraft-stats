@@ -59,6 +59,7 @@
           "import/extensions": "off",
           "import/no-extraneous-dependencies": "off",
           "import/no-unresolved": "off",
+          "jsx-a11y/no-onchange": "off",
           "react/react-in-jsx-scope": "off"
         }
       },

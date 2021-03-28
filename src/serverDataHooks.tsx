@@ -2,18 +2,40 @@ import { useEffect, useState } from 'preact/hooks'
 
 export function useRequestMinecraftPath(initialPath: string) {
   const [minecraftPath, setMinecraftPath] = useState(initialPath)
-  const [isRequesting, setIsRequesting] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const sendRequest = () => {
-    setIsRequesting(true)
+    setIsLoading(true)
   }
   useEffect(() => {
-    if (isRequesting) {
+    if (isLoading) {
       window.serverDataApi.receiveOnce(`receiveUserSelectedMinecraftPath`, (newPath) => {
-        setIsRequesting(false)
+        setIsLoading(false)
         setMinecraftPath(newPath as string)
       })
       window.serverDataApi.send(`requestUserSelectedMinecraftPath`)
     }
-  }, [isRequesting])
-  return { isRequesting, minecraftPath, sendRequest }
+  }, [isLoading])
+  return { isLoading, minecraftPath, sendRequest }
+}
+export function useSupportedVersions() {
+  const [supportedVersions, setSupportedVersions] = useState<string[] | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    window.configFileApi.getSupportedVersions().then((versions) => {
+      setSupportedVersions(versions)
+      setIsLoading(false)
+    })
+  }, [])
+  return { isLoading, supportedVersions }
+}
+export function useSupportedLanguages() {
+  const [supportedLanguages, setSupportedLanguages] = useState<Record<string, LanguageInfo> | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    window.configFileApi.getSupportedLanguages().then((languages) => {
+      setSupportedLanguages(languages)
+      setIsLoading(false)
+    })
+  }, [])
+  return { isLoading, supportedLanguages }
 }
