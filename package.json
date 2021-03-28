@@ -2,7 +2,7 @@
   "name": "minecraft-stats",
   "version": "0.1.0",
   "description": "Just messing around with doing things with the stats you get in a Minecraft world",
-  "main": "main.js",
+  "main": "build/electron/main.js",
   "repository": "https://github.com/verygooddev/minecraft-stats",
   "author": "VeryGoodDev <very_good_dev@outlook.com>",
   "license": "MIT",
@@ -55,6 +55,7 @@
         ],
         "rules": {
           "no-undef": "off",
+          "no-unused-vars": "off",
           "import/extensions": "off",
           "import/no-extraneous-dependencies": "off",
           "import/no-unresolved": "off",

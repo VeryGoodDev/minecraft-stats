@@ -4,6 +4,12 @@ declare var statFileApi: {
   deleteMinecraftPath(): void
   getWorldNames(): string[]
   getWorldStats(worldName: string): object
+  getLangOptions(): string[]
+}
+declare var serverDataApi: {
+  send(channel: string, data?: unknown): void
+  receive(channel: string, handler: (...args: unknown[]) => void): void
+  receiveOnce(channel: string, handler: (...args: unknown[]) => void): void
 }
 declare interface MinecraftStats {
   "minecraft:custom": Record<string, number>

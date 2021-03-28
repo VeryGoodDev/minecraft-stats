@@ -1,6 +1,6 @@
-const { app, BrowserWindow, ipcMain, dialog } = require(`electron`)
-const path = require(`path`)
-const { getUserSelectedMinecraftPath } = require(`./electron/util.js`)
+import { app, BrowserWindow, ipcMain } from 'electron'
+import * as path from 'path'
+import { getUserSelectedMinecraftPath } from './util'
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -9,7 +9,7 @@ function createWindow() {
     minWidth: 350,
     minHeight: 300,
     webPreferences: {
-      preload: path.join(__dirname, `build/electron/preload.js`),
+      preload: path.join(__dirname, `./preload.js`),
       enableRemoteModule: false,
       contextIsolation: true,
     },
@@ -32,7 +32,7 @@ app.on(`window-all-closed`, () => {
     app.quit()
   }
 })
-ipcMain.on(`getUserSelectedMinecraftPath`, async () => {
+ipcMain.on(`requestUserSelectedMinecraftPath`, async () => {
   const newPath = await getUserSelectedMinecraftPath()
-  console.log(newPath)
+  BrowserWindow.getFocusedWindow()?.webContents.send(`receiveUserSelectedMinecraftPath`, newPath)
 })

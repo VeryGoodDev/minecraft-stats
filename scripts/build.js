@@ -40,14 +40,30 @@ esbuild.build(appConfig).then((result) => {
 /**
  * @type {BuildOptions}
  */
-const electronPreloadConfig = {
-  entryPoints: [`electron/preload.ts`],
+const baseElectronConfig = {
   outdir: `build/electron`,
   platform: `node`,
   target: [`node12`],
   bundle: true,
   minify: true,
   external: [`electron`],
+}
+/**
+ * @type {BuildOptions}
+ */
+const electronMainConfig = {
+  ...baseElectronConfig,
+  entryPoints: [`electron/main.ts`],
+}
+esbuild.build(electronMainConfig).then((result) => {
+  log(`Main for Electron`, result)
+})
+/**
+ * @type {BuildOptions}
+ */
+const electronPreloadConfig = {
+  ...baseElectronConfig,
+  entryPoints: [`electron/preload.ts`],
 }
 esbuild.build(electronPreloadConfig).then((result) => {
   log(`Preload for Electron`, result)

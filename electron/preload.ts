@@ -1,9 +1,11 @@
 import Conf from 'conf'
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { promises as fsPromises } from 'fs'
 import * as path from 'path'
+import { runCmd } from './util'
 
 const MC_TEST_PATH = `/Users/Kenobi/AppData/Roaming/.minecraft`
+const MC_TEST_VERSION = `1.16.5`
 const preferences = new Conf()
 
 function getMinecraftPath(): string {
@@ -30,6 +32,17 @@ async function getWorldStats(worldName: string): Promise<MinecraftStats> {
       .then((rawData: MinecraftStatsRaw): MinecraftStats => rawData.stats)
   )
 }
+async function getLangOptions() {
+  const jarPath = path.join(MC_TEST_PATH, `/versions`, MC_TEST_VERSION, `${MC_TEST_VERSION}.jar`)
+  const langPath = `assets/minecraft/lang/*.json`
+  try {
+    const result = await runCmd(`unzip -Z1 ${jarPath} ${langPath}`)
+    return result.stdout.split(`\n`).filter(Boolean)
+  } catch (err) {
+    console.error(`An error occurred while retrieving the language file:`, err)
+    return []
+  }
+}
 
 contextBridge.exposeInMainWorld(`statFileApi`, {
   getMinecraftPath,
@@ -37,4 +50,21 @@ contextBridge.exposeInMainWorld(`statFileApi`, {
   deleteMinecraftPath,
   getWorldNames,
   getWorldStats,
+  getLangOptions,
+})
+contextBridge.exposeInMainWorld(`serverDataApi`, {
+  send: (channel: string, data?: unknown) => {
+    ipcRenderer.send(channel, data)
+  },
+  receive: (channel: string, handler: (...args: unknown[]) => void) => {
+    ipcRenderer.on(channel, (evt, ...args) => handler(...args))
+  },
+  receiveOnce: (channel: string, handler: (...args: unknown[]) => void) => {
+    ipcRenderer.once(channel, (evt, ...args) => handler(...args))
+  },
+})
+process.once(`loaded`, () => {
+  window.addEventListener(`message`, (evt) => {
+    ipcRenderer.send(evt.data.type)
+  })
 })
