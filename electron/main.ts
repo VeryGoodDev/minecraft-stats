@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
-import { getUserSelectedMinecraftPath } from './util'
+import { getUserSelectedMinecraftPath } from './util/server'
 
 function createWindow() {
   const win = new BrowserWindow({

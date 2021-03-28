@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 
-export function useRequestMinecraftPath() {
-  const [minecraftPath, setMinecraftPath] = useState(``)
+export function useRequestMinecraftPath(initialPath: string) {
+  const [minecraftPath, setMinecraftPath] = useState(initialPath)
   const [isRequesting, setIsRequesting] = useState(false)
   const sendRequest = () => {
     setIsRequesting(true)

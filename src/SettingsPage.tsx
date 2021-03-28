@@ -1,7 +1,16 @@
+import { useEffect } from 'preact/hooks'
+import { configKeys } from '../electron/util/common'
 import { useRequestMinecraftPath } from './serverDataHooks'
 
 export default function SettingsPage() {
-  const { isRequesting, minecraftPath, sendRequest } = useRequestMinecraftPath()
+  const { isRequesting, minecraftPath, sendRequest } = useRequestMinecraftPath(
+    window.statFileApi.getConfigItem(configKeys.MINECRAFT_PATH) || ``
+  )
+  useEffect(() => {
+    if (minecraftPath.length > 0) {
+      window.statFileApi.updateConfigItem(configKeys.MINECRAFT_PATH, minecraftPath)
+    }
+  }, [minecraftPath])
   return (
     <>
       <h1>Settings</h1>

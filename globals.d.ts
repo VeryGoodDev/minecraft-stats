@@ -1,7 +1,9 @@
 declare var statFileApi: {
-  getMinecraftPath(): string
-  setMinecraftPath(path: string): void
-  deleteMinecraftPath(): void
+  getConfigItem<T>(key: string): T
+  setConfigItem<T>(key: string, value: T): Promise<void>
+  deleteConfigItem(): Promise<void>
+  configHasKey(key: string): boolean
+  updateConfigItem<T>(key: string, value: T): Promise<void>
   getWorldNames(): string[]
   getWorldStats(worldName: string): object
   getLangOptions(): string[]

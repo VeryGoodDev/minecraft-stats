@@ -2,20 +2,50 @@ import Conf from 'conf'
 import { contextBridge, ipcRenderer } from 'electron'
 import { promises as fsPromises } from 'fs'
 import * as path from 'path'
-import { runCmd } from './util'
+import { configKeys } from './util/common'
+import { runCmd } from './util/server'
 
 const MC_TEST_PATH = `/Users/Kenobi/AppData/Roaming/.minecraft`
 const MC_TEST_VERSION = `1.16.5`
-const preferences = new Conf()
+const preferences = new Conf({
+  defaults: {
+    [configKeys.MINECRAFT_PATH]: ``,
+    version: 1,
+  },
+})
 
-function getMinecraftPath(): string {
-  return (preferences.get(`minecraftPath`) as string) ?? ``
+function getConfigItem(key: string): unknown {
+  return preferences.get(key)
 }
-function setMinecraftPath(newPath: string | void): void {
-  preferences.set(`minecraftPath`, newPath)
+function setConfigItem<T>(key: string, newValue: T): Promise<void> {
+  return new Promise((resolve, reject) => {
+    try {
+      preferences.set(key, newValue)
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
 }
-function deleteMinecraftPath(): void {
-  preferences.delete(`minecraftPath`)
+function deleteConfigItem(key: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    try {
+      preferences.delete(key)
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+function configHasKey(key: string): boolean {
+  return preferences.has(key)
+}
+function updateConfigItem<T = unknown>(key: string, newValue: T): Promise<void> {
+  if (!configHasKey(key)) {
+    console.warn(`Attempting to update a non-existent config value of [${key}]`)
+    return Promise.resolve()
+  }
+  return setConfigItem(key, newValue)
 }
 function getWorldNames(): Promise<string[]> {
   return fsPromises.readdir(path.join(MC_TEST_PATH, `/saves`))
@@ -45,9 +75,11 @@ async function getLangOptions() {
 }
 
 contextBridge.exposeInMainWorld(`statFileApi`, {
-  getMinecraftPath,
-  setMinecraftPath,
-  deleteMinecraftPath,
+  getConfigItem,
+  setConfigItem,
+  deleteConfigItem,
+  configHasKey,
+  updateConfigItem,
   getWorldNames,
   getWorldStats,
   getLangOptions,
