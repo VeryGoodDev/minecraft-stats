@@ -6,7 +6,7 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, `build/preload.js`),
+      preload: path.join(__dirname, `build/electron/preload.js`),
     },
     title: `Minecraft Stats`,
   })
