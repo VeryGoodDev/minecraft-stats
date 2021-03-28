@@ -7,18 +7,25 @@
   "author": "VeryGoodDev <very_good_dev@outlook.com>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "lint": "eslint **/*.js",
-    "start": "electron ."
+    "start": "yarn build && electron ."
+  },
+  "dependencies": {
+    "preact": "^10.5.13",
+    "preact-render-to-string": "^5.1.16",
+    "preact-router": "^3.2.1"
   },
   "devDependencies": {
     "electron": "^12.0.2",
+    "esbuild": "^0.10.2",
     "eslint": "^7",
-    "eslint-config-personal": "github:verygooddev/eslint-config-personal"
+    "eslint-config-personal": "github:verygooddev/eslint-config-personal",
+    "typescript": "^4.2.3"
   },
   "eslintConfig": {
     "extends": [
       "personal"
     ]
-  },
-  "dependencies": {}
+  }
 }

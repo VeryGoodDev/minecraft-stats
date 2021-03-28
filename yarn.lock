@@ -1490,6 +1490,11 @@ es6-error@^4.1.1:
   resolved "https://registry.yarnpkg.com/es6-error/-/es6-error-4.1.1.tgz#9e3af407459deed47e9a91f9b885a84eb05c561d"
   integrity sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==
 
+esbuild@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.10.2.tgz#caa65a8f3096d547d89159918039df6c5c6c90be"
+  integrity sha512-/5vsZD7wTJJHC3yNXLUjXNvUDwqwNoIMvFvLd9tcDQ9el5l13pspYm3yufavjIeYvNtAbo+6N/6uoWx9dGA6ug==
+
 escalade@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
@@ -2554,6 +2559,23 @@ pkg-dir@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+preact-render-to-string@^5.1.16:
+  version "5.1.16"
+  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-5.1.16.tgz#379db30e51916d45a67c00163ef812ad376aa721"
+  integrity sha512-HvO3W29Sziz9r5FZGwl2e34XJKzyRLvjhouv3cpkCGszNPdnvkO8p4B6CBpe0MT/tzR+QVbmsAKLrMK222UXew==
+  dependencies:
+    pretty-format "^3.8.0"
+
+preact-router@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/preact-router/-/preact-router-3.2.1.tgz#c7d12d8fc7a60bfbe5cadf23a234551bec783468"
+  integrity sha512-KEN2VN1DxUlTwzW5IFkF13YIA2OdQ2OvgJTkQREF+AA2NrHRLaGbB68EjS4IeZOa1shvQ1FvEm3bSLta4sXBhg==
+
+preact@^10.5.13:
+  version "10.5.13"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.5.13.tgz#85f6c9197ecd736ce8e3bec044d08fd1330fa019"
+  integrity sha512-q/vlKIGNwzTLu+jCcvywgGrt+H/1P/oIRSD6mV4ln3hmlC+Aa34C7yfPI4+5bzW8pONyVXYS7SvXosy2dKKtWQ==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
@@ -2575,6 +2597,11 @@ prettier@^2.0.2:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
   integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
+
+pretty-format@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
+  integrity sha1-v77VbV6ad2ZF9LH/eqGjrE+jw4U=
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -3032,6 +3059,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
+  integrity sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
 
 unbox-primitive@^1.0.0:
   version "1.0.1"
