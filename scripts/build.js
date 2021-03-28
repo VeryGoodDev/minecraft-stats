@@ -1,13 +1,16 @@
 const esbuild = require(`esbuild`)
+
 /**
  * @typedef {import('esbuild').BuildOptions} BuildOptions
  */
 
 const [env] = process.argv.slice(2)
+const log = (target, result) => console.log(`${target} built with the following results:`, result)
+// App compilation
 /**
  * @type {BuildOptions}
  */
-const baseConfig = {
+const baseAppConfig = {
   entryPoints: [`src/index.tsx`],
   outdir: `build`,
   bundle: true,
@@ -18,29 +21,34 @@ const baseConfig = {
 /**
  * @type {BuildOptions}
  */
-const devConfig = {
-  ...baseConfig,
+const devAppConfig = {
+  ...baseAppConfig,
   sourcemap: true,
 }
 /**
  * @type {BuildOptions}
  */
-const prodConfig = {
-  ...baseConfig,
+const prodAppConfig = {
+  ...baseAppConfig,
   minify: true,
 }
-esbuild.build(env === `--prod` ? prodConfig : devConfig).then((result) => {
-  console.log(`App built with the following results:`, result)
+const appConfig = env === `--prod` ? prodAppConfig : devAppConfig
+esbuild.build(appConfig).then((result) => {
+  log(`App`, result)
 })
-esbuild
-  .build({
-    entryPoints: [`electron/preload.ts`],
-    outdir: `build/electron`,
-    bundle: true,
-    target: [`node12`],
-    platform: `node`,
-    external: [`electron`],
-  })
-  .then((result) => {
-    console.log(`Preload for Electron built with the following results:`, result)
-  })
+// Electron preload compilation
+/**
+ * @type {BuildOptions}
+ */
+const electronPreloadConfig = {
+  entryPoints: [`electron/preload.ts`],
+  outdir: `build/electron`,
+  platform: `node`,
+  target: [`node12`],
+  bundle: true,
+  minify: true,
+  external: [`electron`],
+}
+esbuild.build(electronPreloadConfig).then((result) => {
+  log(`Preload for Electron`, result)
+})
