@@ -1,11 +1,17 @@
 import { contextBridge } from 'electron'
+import Store from 'electron-store'
 import { promises as fsPromises } from 'fs'
 import * as path from 'path'
 
 const MC_TEST_PATH = `/Users/Kenobi/AppData/Roaming/.minecraft`
+const preferences = new Store()
 
-// function getMinecraftPath(): string {}
-// function setMinecraftPath(path: string): void {}
+function getMinecraftPath(): string {
+  return preferences.get(`minecraftPath`) as string
+}
+function setMinecraftPath(path: string): void {
+  preferences.set(`minecraftPath`, path)
+}
 function getWorldNames(): Promise<string[]> {
   return fsPromises.readdir(path.join(MC_TEST_PATH, `/saves`))
 }
@@ -20,8 +26,8 @@ async function getWorldStats(worldName: string): Promise<object> {
 }
 
 contextBridge.exposeInMainWorld(`statFileApi`, {
-  // getMinecraftPath,
-  // setMinecraftPath,
+  getMinecraftPath,
+  setMinecraftPath,
   getWorldNames,
   getWorldStats,
 })

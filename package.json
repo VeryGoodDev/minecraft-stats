@@ -12,6 +12,7 @@
     "start": "yarn build && electron ."
   },
   "dependencies": {
+    "electron-store": "^7.0.2",
     "preact": "^10.5.13",
     "preact-render-to-string": "^5.1.16",
     "preact-router": "^3.2.1"
