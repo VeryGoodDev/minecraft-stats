@@ -13,7 +13,7 @@
     "build:electron": "tsc --project electron/tsconfig.json",
     "build:prod": "concurrently \"npm:build:app:prod\" \"npm:build:electron\"",
     "lint": "eslint **/*.js",
-    "start": "yarn build && electron ."
+    "start": "yarn build:app && electron ."
   },
   "dependencies": {
     "conf": "^9.0.2",

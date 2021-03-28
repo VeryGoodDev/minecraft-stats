@@ -1,3 +1,4 @@
+const esbuild = require(`esbuild`)
 /**
  * @typedef {import('esbuild').BuildOptions} BuildOptions
  */
@@ -28,4 +29,18 @@ const prodConfig = {
   ...baseConfig,
   minify: true,
 }
-require(`esbuild`).buildSync(env === `--prod` ? prodConfig : devConfig)
+esbuild.build(env === `--prod` ? prodConfig : devConfig).then((result) => {
+  console.log(`App built with the following results:`, result)
+})
+esbuild
+  .build({
+    entryPoints: [`electron/preload.ts`],
+    outdir: `build/electron`,
+    bundle: true,
+    target: [`node12`],
+    platform: `node`,
+    external: [`electron`],
+  })
+  .then((result) => {
+    console.log(`Preload for Electron built with the following results:`, result)
+  })
