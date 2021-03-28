@@ -14,8 +14,7 @@ function createWindow() {
   })
   // NOTE: If I find a need for the menu bar, it can be kept and hidden with autoHideMenuBar: true in the BrowserWindow constructor
   // win.removeMenu()
-  // win.loadFile(`index.html`)
-  win.loadURL(`./build/src/index.js`)
+  win.loadFile(`src/index.html`)
 }
 app.whenReady().then(() => {
   createWindow()

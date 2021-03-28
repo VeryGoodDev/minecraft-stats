@@ -1,5 +1,5 @@
 /**
- * @typedef {import("esbuild").BuildOptions} BuildOptions
+ * @typedef {import('esbuild').BuildOptions} BuildOptions
  */
 
 const [env] = process.argv.slice(2)
@@ -11,6 +11,7 @@ const baseConfig = {
   outdir: `build`,
   bundle: true,
   format: `esm`,
+  inject: [`scripts/preact-shim.js`],
   target: [`chrome89`],
 }
 /**
