@@ -1,11 +1,17 @@
 const esbuild = require(`esbuild`)
+const { performance } = require(`perf_hooks`)
 
 /**
  * @typedef {import('esbuild').BuildOptions} BuildOptions
  */
 
+const start = performance.now()
 const [env] = process.argv.slice(2)
-const log = (target, result) => console.log(`${target} built with the following results:`, result)
+const log = (target, result) =>
+  console.log(
+    `${target} built in ${(performance.now() - start).toFixed(4)} milliseconds with the following results:`,
+    result
+  )
 // App compilation
 /**
  * @type {BuildOptions}
@@ -33,7 +39,7 @@ const prodAppConfig = {
   minify: true,
 }
 const appConfig = env === `--prod` ? prodAppConfig : devAppConfig
-esbuild.build(appConfig).then((result) => {
+const appBuild = esbuild.build(appConfig).then((result) => {
   log(`App`, result)
 })
 // Electron preload compilation
@@ -55,7 +61,7 @@ const electronMainConfig = {
   ...baseElectronConfig,
   entryPoints: [`electron/main.ts`],
 }
-esbuild.build(electronMainConfig).then((result) => {
+const electronMainBuild = esbuild.build(electronMainConfig).then((result) => {
   log(`Main for Electron`, result)
 })
 /**
@@ -65,6 +71,11 @@ const electronPreloadConfig = {
   ...baseElectronConfig,
   entryPoints: [`electron/preload.ts`],
 }
-esbuild.build(electronPreloadConfig).then((result) => {
+const electronPreloadBuild = esbuild.build(electronPreloadConfig).then((result) => {
   log(`Preload for Electron`, result)
+})
+Promise.all([appBuild, electronMainBuild, electronPreloadBuild]).then(() => {
+  const now = performance.now()
+  const bundleTime = (now - start).toFixed(4)
+  console.log(`Building all bundles took ${bundleTime} milliseconds`)
 })
