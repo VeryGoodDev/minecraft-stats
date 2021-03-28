@@ -24,10 +24,10 @@ async function getWorldStats(worldName: string): Promise<object> {
   return (
     fsPromises
       .readFile(path.join(statsPath, fileName))
-      .then((rawBuffer: Buffer) => JSON.parse(rawBuffer.toString()))
+      .then((rawBuffer: Buffer): MinecraftStatsRaw => JSON.parse(rawBuffer.toString()))
       // TODO: Typing for Minecraft stats
       // TODO: Transform keys into more friendly names
-      .then((rawData: object): object => rawData)
+      .then((rawData: MinecraftStatsRaw): MinecraftStats => rawData.stats)
   )
 }
 
