@@ -6,9 +6,10 @@ const preferences = new Conf({
     [configKeys.MINECRAFT_PATH]: ``,
     [configKeys.MINECRAFT_VERSION]: ``,
     [configKeys.LANGUAGE_PREF]: `en_us`,
+    [configKeys.CURRENT_LANGUAGE_STRINGS]: {},
   },
 })
-export function getConfigItem(key: string): string {
+export function getConfigItem(key: string): string | Record<string, string> {
   return preferences.get(key)
 }
 export function updateConfigItem<T = unknown>(key: string, newValue: T): Promise<void> {
