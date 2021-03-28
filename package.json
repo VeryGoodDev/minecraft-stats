@@ -7,7 +7,11 @@
   "author": "VeryGoodDev <very_good_dev@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "concurrently \"npm:build:app\" \"npm:build:electron\"",
+    "build:app": "node ./scripts/build.js",
+    "build:app:prod": "node ./scripts/build.js --prod",
+    "build:electron": "tsc",
+    "build:prod": "concurrently \"npm:build:app:prod\" \"npm:build:electron\"",
     "lint": "eslint **/*.js",
     "start": "yarn build && electron ."
   },
@@ -18,6 +22,7 @@
     "preact-router": "^3.2.1"
   },
   "devDependencies": {
+    "concurrently": "^6.0.0",
     "electron": "^12.0.2",
     "esbuild": "^0.10.2",
     "eslint": "^7",

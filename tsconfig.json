@@ -14,9 +14,8 @@
     // Advanced Options
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-
-    // JSX Options
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
   },
+  "include": [
+    "./electron/**/*.ts"
+  ]
 }
