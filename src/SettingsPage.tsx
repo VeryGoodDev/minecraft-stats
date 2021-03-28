@@ -4,11 +4,11 @@ import { useRequestMinecraftPath } from './serverDataHooks'
 
 export default function SettingsPage() {
   const { isRequesting, minecraftPath, sendRequest } = useRequestMinecraftPath(
-    window.statFileApi.getConfigItem(configKeys.MINECRAFT_PATH) || ``
+    window.configApi.getConfigItem(configKeys.MINECRAFT_PATH) || ``
   )
   useEffect(() => {
     if (minecraftPath.length > 0) {
-      window.statFileApi.updateConfigItem(configKeys.MINECRAFT_PATH, minecraftPath)
+      window.configApi.updateConfigItem(configKeys.MINECRAFT_PATH, minecraftPath)
     }
   }, [minecraftPath])
   return (
@@ -22,7 +22,7 @@ export default function SettingsPage() {
           sendRequest()
         }}
       >
-        Click Me
+        Set Your Minecraft Path
       </button>
     </>
   )

@@ -1,12 +1,16 @@
-declare var statFileApi: {
+declare var configApi: {
   getConfigItem<T>(key: string): T
+  updateConfigItem<T>(key: string, value: T): Promise<void>
   setConfigItem<T>(key: string, value: T): Promise<void>
   deleteConfigItem(): Promise<void>
-  configHasKey(key: string): boolean
-  updateConfigItem<T>(key: string, value: T): Promise<void>
+}
+declare var configFileApi: {
+  getSupportedVersions(): Promise<string[]>
+  getSupportedLanguages(): Promise<Record<string, LanguageInfo>>
+}
+declare var statFileApi: {
   getWorldNames(): string[]
   getWorldStats(worldName: string): object
-  getLangOptions(): string[]
 }
 declare var serverDataApi: {
   send(channel: string, data?: unknown): void
