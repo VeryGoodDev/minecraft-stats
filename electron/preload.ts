@@ -18,7 +18,7 @@ function deleteMinecraftPath(): void {
 function getWorldNames(): Promise<string[]> {
   return fsPromises.readdir(path.join(MC_TEST_PATH, `/saves`))
 }
-async function getWorldStats(worldName: string): Promise<object> {
+async function getWorldStats(worldName: string): Promise<MinecraftStats> {
   const statsPath: string = path.join(MC_TEST_PATH, `/saves`, worldName, `/stats`)
   const [fileName]: string[] = await fsPromises.readdir(statsPath)
   return (
