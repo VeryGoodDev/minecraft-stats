@@ -7,7 +7,7 @@ const MC_TEST_PATH = `/Users/Kenobi/AppData/Roaming/.minecraft`
 const preferences = new Store()
 
 function getMinecraftPath(): string {
-  return preferences.get(`minecraftPath`) as string
+  return preferences.get(`minecraftPath`) as string ?? ``
 }
 function setMinecraftPath(path: string): void {
   preferences.set(`minecraftPath`, path)
