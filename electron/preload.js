@@ -36,18 +36,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var conf_1 = require("conf");
 var electron_1 = require("electron");
-var electron_store_1 = require("electron-store");
 var fs_1 = require("fs");
 var path = require("path");
 var MC_TEST_PATH = "/Users/Kenobi/AppData/Roaming/.minecraft";
-var preferences = new electron_store_1["default"]();
+var preferences = new conf_1["default"]();
 function getMinecraftPath() {
     var _a;
     return (_a = preferences.get("minecraftPath")) !== null && _a !== void 0 ? _a : "";
 }
-function setMinecraftPath(path) {
-    preferences.set("minecraftPath", path);
+function setMinecraftPath(newPath) {
+    preferences.set("minecraftPath", newPath);
+}
+function deleteMinecraftPath() {
+    preferences["delete"]("minecraftPath");
 }
 function getWorldNames() {
     return fs_1.promises.readdir(path.join(MC_TEST_PATH, "/saves"));
@@ -62,11 +65,12 @@ function getWorldStats(worldName) {
                     return [4 /*yield*/, fs_1.promises.readdir(statsPath)];
                 case 1:
                     fileName = (_a.sent())[0];
-                    return [2 /*return*/, fs_1.promises.readFile(path.join(statsPath, fileName))
+                    return [2 /*return*/, (fs_1.promises
+                            .readFile(path.join(statsPath, fileName))
                             .then(function (rawBuffer) { return JSON.parse(rawBuffer.toString()); })
                             // TODO: Typing for Minecraft stats
                             // TODO: Transform keys into more friendly names
-                            .then(function (rawData) { return rawData; })];
+                            .then(function (rawData) { return rawData; }))];
             }
         });
     });
@@ -74,6 +78,7 @@ function getWorldStats(worldName) {
 electron_1.contextBridge.exposeInMainWorld("statFileApi", {
     getMinecraftPath: getMinecraftPath,
     setMinecraftPath: setMinecraftPath,
+    deleteMinecraftPath: deleteMinecraftPath,
     getWorldNames: getWorldNames,
     getWorldStats: getWorldStats
 });

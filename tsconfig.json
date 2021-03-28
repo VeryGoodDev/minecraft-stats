@@ -14,14 +14,11 @@
     // Advanced Options
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "importsNotUsedAsValues": "preserve",
 
     // JSX Options
     "jsx": "react",
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment",
-  },
-  "include": [
-    "./electron/**/*.ts"
-  ]
+
+  }
 }
