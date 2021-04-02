@@ -10,5 +10,11 @@ export default function injectGlobalStyles(): void {
       margin: 0;
       padding: 0;
     }
+    main {
+      margin: 0 auto;
+      max-width: 700px;
+      padding: 0 16px;
+      width: 100vw;
+    }
   `
 }
