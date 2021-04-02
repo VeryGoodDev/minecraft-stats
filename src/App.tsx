@@ -1,9 +1,11 @@
 import Router, { Route } from 'preact-router'
 import { lazy, Suspense } from 'preact/compat'
+import injectGlobalStyles from './injectGlobalStyles'
 
 const InitialPage = lazy(() => import(`./InitialPage`))
 const SettingsPage = lazy(() => import(`./SettingsPage`))
 
+injectGlobalStyles()
 export default function App() {
   return (
     <Suspense fallback="Loading...">
