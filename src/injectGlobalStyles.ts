@@ -9,6 +9,7 @@ export default function injectGlobalStyles(): void {
     html, body {
       margin: 0;
       padding: 0;
+      user-select: none;
     }
     main {
       margin: 0 auto;
