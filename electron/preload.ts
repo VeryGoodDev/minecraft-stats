@@ -18,9 +18,6 @@ contextBridge.exposeInMainWorld(`serverDataApi`, {
   },
 })
 process.once(`loaded`, () => {
-  window.addEventListener(`message`, (evt) => {
-    ipcRenderer.send(evt.data.type)
-  })
   // Prevent file drag/drop
   document.addEventListener(`dragover`, (evt) => evt.preventDefault())
   document.addEventListener(`drop`, (evt) => evt.preventDefault())
