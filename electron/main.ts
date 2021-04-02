@@ -14,10 +14,14 @@ function createWindow() {
       contextIsolation: true,
     },
     title: `Minecraft Stats`,
+    show: false,
   })
   // NOTE: If I find a need for the menu bar, it can be kept and hidden with autoHideMenuBar: true in the BrowserWindow constructor
   // win.removeMenu()
   win.loadFile(`src/index.html`)
+  win.once(`ready-to-show`, () => {
+    win.show()
+  })
 }
 app.whenReady().then(() => {
   createWindow()
