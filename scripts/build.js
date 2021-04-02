@@ -1,4 +1,5 @@
 const esbuild = require(`esbuild`)
+const aliasPlugin = require(`esbuild-plugin-alias`)
 const { performance } = require(`perf_hooks`)
 
 /**
@@ -7,11 +8,7 @@ const { performance } = require(`perf_hooks`)
 
 const start = performance.now()
 const [env] = process.argv.slice(2)
-const log = (target, result) =>
-  console.log(
-    `${target} built in ${(performance.now() - start).toFixed(4)} milliseconds with the following results:`,
-    result
-  )
+const log = (target) => console.log(`${target} built in ${(performance.now() - start).toFixed(4)} milliseconds`)
 // App compilation
 /**
  * @type {BuildOptions}
@@ -23,6 +20,17 @@ const baseAppConfig = {
   format: `esm`,
   inject: [`scripts/preact-shim.js`],
   target: [`chrome89`],
+  external: [`react`],
+  plugins: [
+    aliasPlugin({
+      react: require.resolve(`preact/compat`),
+      'react-dom/test-utils': require.resolve(`preact/test-utils`),
+      'react-dom': require.resolve(`preact/compat`),
+    }),
+  ],
+  define: {
+    'process.env.NODE_ENV': `'production'`,
+  },
 }
 /**
  * @type {BuildOptions}
@@ -39,8 +47,8 @@ const prodAppConfig = {
   minify: true,
 }
 const appConfig = env === `--prod` ? prodAppConfig : devAppConfig
-const appBuild = esbuild.build(appConfig).then((result) => {
-  log(`App`, result)
+const appBuild = esbuild.build(appConfig).then(() => {
+  log(`App`)
 })
 // Electron preload compilation
 /**
@@ -61,8 +69,8 @@ const electronMainConfig = {
   ...baseElectronConfig,
   entryPoints: [`electron/main.ts`],
 }
-const electronMainBuild = esbuild.build(electronMainConfig).then((result) => {
-  log(`Main for Electron`, result)
+const electronMainBuild = esbuild.build(electronMainConfig).then(() => {
+  log(`Main for Electron`)
 })
 /**
  * @type {BuildOptions}
@@ -71,8 +79,8 @@ const electronPreloadConfig = {
   ...baseElectronConfig,
   entryPoints: [`electron/preload.ts`],
 }
-const electronPreloadBuild = esbuild.build(electronPreloadConfig).then((result) => {
-  log(`Preload for Electron`, result)
+const electronPreloadBuild = esbuild.build(electronPreloadConfig).then(() => {
+  log(`Preload for Electron`)
 })
 Promise.all([appBuild, electronMainBuild, electronPreloadBuild]).then(() => {
   const now = performance.now()
