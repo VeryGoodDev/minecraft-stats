@@ -16,8 +16,7 @@ export default function SettingsPage() {
   return (
     <>
       <h1>Settings</h1>
-      {isLoading ? <div>Loading...</div> : null}
-      <div>{minecraftPath || `No Minecraft path provided`}</div>
+      <div>{isLoading ? `Waiting for new path to be selected` : minecraftPath || `No Minecraft path provided`}</div>
       <button
         type="button"
         onClick={() => {

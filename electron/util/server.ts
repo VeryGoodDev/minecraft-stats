@@ -19,9 +19,9 @@ export function runCmd(cmd: string): Promise<{ stdout: string; stdin: string }> 
 /**
  * WARNING: This should only be used in a Main process; BrowserWindow and dialog are both unavailable in a Renderer process, and this function will fail.
  */
-export async function getUserSelectedMinecraftPath(): Promise<string> {
+export async function getUserSelectedMinecraftPath(): Promise<{ canceled: boolean; newPath: string }> {
   const currentWindow = BrowserWindow.getFocusedWindow()
-  if (!currentWindow) return ``
+  if (!currentWindow) return { canceled: true, newPath: `` }
   const {
     canceled,
     filePaths: [newPath],
@@ -29,8 +29,7 @@ export async function getUserSelectedMinecraftPath(): Promise<string> {
     properties: [`openDirectory`, `showHiddenFiles`],
     defaultPath: getDefaultMinecraftPath(),
   })
-  if (canceled || !newPath) return ``
-  return newPath
+  return { canceled, newPath }
 }
 
 // Locations based on https://minecraft.fandom.com/wiki/.minecraft#Locating_.minecraft

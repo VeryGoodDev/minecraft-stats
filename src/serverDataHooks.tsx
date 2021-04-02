@@ -8,9 +8,11 @@ export function useRequestMinecraftPath(initialPath: string) {
   }
   useEffect(() => {
     if (isLoading) {
-      window.serverDataApi.receiveOnce(`receiveUserSelectedMinecraftPath`, (newPath) => {
+      window.serverDataApi.receiveOnce(`receiveUserSelectedMinecraftPath`, ({ canceled, newPath }) => {
         setIsLoading(false)
-        setMinecraftPath(newPath as string)
+        if (!canceled) {
+          setMinecraftPath(newPath)
+        }
       })
       window.serverDataApi.send(`requestUserSelectedMinecraftPath`)
     }
