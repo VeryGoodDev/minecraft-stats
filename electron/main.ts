@@ -14,6 +14,8 @@ function createWindow() {
       contextIsolation: true,
     },
     title: `Minecraft Stats`,
+    titleBarStyle: `hidden`,
+    frame: false,
     show: false,
   })
   // NOTE: If I find a need for the menu bar, it can be kept and hidden with autoHideMenuBar: true in the BrowserWindow constructor
@@ -39,4 +41,48 @@ app.on(`window-all-closed`, () => {
 ipcMain.on(`requestUserSelectedMinecraftPath`, async () => {
   const newPath = await getUserSelectedMinecraftPath()
   BrowserWindow.getFocusedWindow()?.webContents.send(`receiveUserSelectedMinecraftPath`, newPath)
+})
+ipcMain.on(`requestWindowMinimize`, () => {
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  try {
+    currentWindow?.minimize()
+    currentWindow?.webContents.send(`receiveWindowMinimizeResult`, { success: true })
+  } catch (err) {
+    currentWindow?.webContents.send(`receiveWindowMinimizeResult`, { success: false, err })
+  }
+})
+ipcMain.on(`requestWindowToggleMaximize`, () => {
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  try {
+    if (currentWindow?.isMaximized()) {
+      currentWindow.unmaximize()
+      currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized: false })
+    } else if (currentWindow) {
+      currentWindow.maximize()
+      currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized: true })
+    }
+    currentWindow?.webContents.send(`receiveWindowToggleMaximizeResult`, { success: true })
+  } catch (err) {
+    currentWindow?.webContents.send(`receiveWindowToggleMaximizeResult`, { success: false, err })
+  }
+})
+ipcMain.on(`requestWindowClose`, () => {
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  try {
+    currentWindow?.close()
+  } catch (err) {
+    currentWindow?.webContents.send(`receiveWindowCloseResult`, { success: false, err })
+  }
+})
+ipcMain.on(`requestWindowMaximizedStatus`, () => {
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  try {
+    const isMaximized = currentWindow?.isMaximized()
+    if (typeof isMaximized !== `boolean`) {
+      throw new Error(`isMaximized could not be determined`)
+    }
+    currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized })
+  } catch (err) {
+    currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: false, err })
+  }
 })

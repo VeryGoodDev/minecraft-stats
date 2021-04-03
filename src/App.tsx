@@ -1,5 +1,6 @@
 import Router, { Route } from 'preact-router'
 import { lazy, Suspense } from 'preact/compat'
+import AppHeader from './AppHeader'
 import injectGlobalStyles from './injectGlobalStyles'
 
 const InitialPage = lazy(() => import(`./InitialPage`))
@@ -9,11 +10,7 @@ injectGlobalStyles()
 export default function App() {
   return (
     <>
-      <header>
-        {/* ICON */}
-        {/* WINDOW TITLE */}
-        {/* BUTTONS */}
-      </header>
+      <AppHeader />
       <main>
         <Suspense fallback="Loading...">
           <Router>

@@ -18,6 +18,7 @@
     "jsx": "preserve",
     "jsxImportSource": "preact",
     "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment"
+    "jsxFragmentFactory": "Fragment",
+    "types": ["node"]
   }
 }

@@ -23,6 +23,12 @@ declare var serverDataApi: {
   receive(channel: string, handler: (...args: any[]) => void): void
   receiveOnce(channel: string, handler: (...args: any[]) => void): void
 }
+declare var windowControlApi: {
+  minimize(): void
+  toggleMaximize(): void
+  close(): void
+  requestMaximizedStatus(timeout?: number): Promise<{ success: boolean, isMaximized?: boolean, err?: Error }>
+}
 declare interface MinecraftStats {
   "minecraft:custom": Record<string, number>
   "minecraft:killed": Record<string, number>
