@@ -24,6 +24,12 @@ function createWindow() {
   win.once(`ready-to-show`, () => {
     win.show()
   })
+  win.on(`maximize`, () => {
+    win.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized: true })
+  })
+  win.on(`unmaximize`, () => {
+    win.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized: false })
+  })
 }
 app.whenReady().then(() => {
   createWindow()
@@ -56,10 +62,8 @@ ipcMain.on(`requestWindowToggleMaximize`, () => {
   try {
     if (currentWindow?.isMaximized()) {
       currentWindow.unmaximize()
-      currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized: false })
     } else if (currentWindow) {
       currentWindow.maximize()
-      currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized: true })
     }
     currentWindow?.webContents.send(`receiveWindowToggleMaximizeResult`, { success: true })
   } catch (err) {
