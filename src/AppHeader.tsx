@@ -8,7 +8,8 @@ const DEFAULT_TITLE = `Minecraft Stats`
 const headerCss = css`
   -webkit-app-region: drag;
   align-items: center;
-  background-color: hsl(120deg 20% 50%);
+  background-color: hsl(200deg 80% 20%);
+  color: #fff;
   display: grid;
   grid-column-gap: 8px;
   grid-template-columns: auto 1fr auto;
@@ -27,6 +28,7 @@ const windowIconWrapperCss = css`
 const temporaryIconCss = css`
   --size: 20px;
   background-image: linear-gradient(to bottom, forestgreen 0%, forestgreen 33%, sienna 33%);
+  display: inline-block;
   height: var(--size);
   width: var(--size);
 `
@@ -41,10 +43,11 @@ const windowTitleButtonWrapperCss = css`
   padding: 0;
 `
 const windowTitleButtonCss = css`
-  --hover-color: hsla(0, 0%, 100%, 0.5);
+  --hover-color: hsla(0, 0%, 75%, 0.5);
   background-color: transparent;
   border: none;
   border-radius: 0;
+  color: inherit;
   height: 32px;
   padding: 0;
   position: relative;
@@ -59,12 +62,15 @@ const windowTitleButtonCss = css`
     outline: none;
   }
 `
-const windowTitleCloseButtonCss = css`
-  --hover-color: red;
-`
+const windowTitleCloseButtonCss = cx(
+  windowTitleButtonCss,
+  css`
+    --hover-color: hsla(0deg, 85%, 55%, 0.95);
+  `
+)
 const minimizeButtonIconCss = css`
   &::before {
-    border-top: 2px solid black;
+    border-top: 2px solid currentColor;
     bottom: 10px;
     content: '';
     left: 12px;
@@ -74,7 +80,7 @@ const minimizeButtonIconCss = css`
 `
 const maximizeButtonIconCss = css`
   &::before {
-    border: 2px solid black;
+    border: 2px solid currentColor;
     content: '';
     height: 12px;
     left: 12px;
@@ -85,7 +91,7 @@ const maximizeButtonIconCss = css`
 `
 const unmaximizeButtonIconCss = css`
   &::before {
-    border: 2px solid black;
+    border: 2px solid currentColor;
     content: '';
     height: 12px;
     left: 10px;
@@ -94,7 +100,7 @@ const unmaximizeButtonIconCss = css`
     width: 12px;
   }
   &::after {
-    border: 2px solid black;
+    border: 2px solid currentColor;
     clip-path: polygon(0 0, 16px 0, 16px 16px, 8px 16px, 8px 8px, 0 4px);
     content: '';
     height: 12px;
@@ -107,7 +113,7 @@ const unmaximizeButtonIconCss = css`
 const closeButtonIconCss = css`
   &::before,
   &::after {
-    background-color: black;
+    background-color: currentColor;
     content: '';
     height: 17px;
     left: 18px;
@@ -128,7 +134,7 @@ export default function AppHeader() {
       <Helmet title={currentTitle} onChangeClientState={({ title }) => setCurrentTitle(title)} />
       <header class={headerCss}>
         <div class={windowIconWrapperCss}>
-          <div class={temporaryIconCss} />
+          <span class={temporaryIconCss} />
         </div>
         <div class={windowTitleCss}>{currentTitle}</div>
         <div class={windowTitleButtonWrapperCss}>
@@ -138,7 +144,7 @@ export default function AppHeader() {
           <button class={windowTitleButtonCss} onClick={window.windowControlApi.toggleMaximize}>
             <span class={windowIsMaximized ? unmaximizeButtonIconCss : maximizeButtonIconCss} />
           </button>
-          <button class={cx(windowTitleButtonCss, windowTitleCloseButtonCss)} onClick={window.windowControlApi.close}>
+          <button class={windowTitleCloseButtonCss} onClick={window.windowControlApi.close}>
             <span class={closeButtonIconCss} />
           </button>
         </div>
