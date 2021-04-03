@@ -8,15 +8,22 @@ const SettingsPage = lazy(() => import(`./SettingsPage`))
 injectGlobalStyles()
 export default function App() {
   return (
-    <main>
-      <Suspense fallback="Loading...">
-        <Router>
-          <Route default component={InitialPage} />
-          <Route path="/settings" component={SettingsPage} />
-          {/* <Route path="/world-selection" /> */}
-          {/* <Route path="/stats/:world" /> */}
-        </Router>
-      </Suspense>
-    </main>
+    <>
+      <header>
+        {/* ICON */}
+        {/* WINDOW TITLE */}
+        {/* BUTTONS */}
+      </header>
+      <main>
+        <Suspense fallback="Loading...">
+          <Router>
+            <Route default component={InitialPage} />
+            <Route path="/settings" component={SettingsPage} />
+            {/* <Route path="/world-selection" /> */}
+            {/* <Route path="/stats/:world" /> */}
+          </Router>
+        </Suspense>
+      </main>
+    </>
   )
 }
