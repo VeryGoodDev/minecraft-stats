@@ -1,7 +1,5 @@
 import { css } from '@emotion/css'
-import { useEffect } from 'preact/hooks'
 import { Helmet } from 'react-helmet'
-import { configKeys } from '../electron/util/common'
 import { SelectLanguage, SelectMinecraftPath, SelectVersion } from './configComponents'
 import { useRequestMinecraftPath, useSupportedLanguages, useSupportedVersions } from './serverDataHooks'
 
@@ -19,11 +17,6 @@ export default function SettingsPage() {
   const { minecraftPath } = requestMinecraftPath
   const supportedVersions = useSupportedVersions(minecraftPath)
   const supportedLanguages = useSupportedLanguages(supportedVersions.selectedVersion)
-  useEffect(() => {
-    if (minecraftPath.length > 0) {
-      window.configApi.updateConfigItem(configKeys.MINECRAFT_PATH, minecraftPath)
-    }
-  }, [minecraftPath])
   return (
     <>
       <Helmet title="Minecraft Stats - Settings" />

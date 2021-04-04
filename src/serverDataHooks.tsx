@@ -10,6 +10,11 @@ export function useRequestMinecraftPath() {
     setIsLoading(true)
   }
   useEffect(() => {
+    if (minecraftPath.length > 0) {
+      window.configApi.updateConfigItem(configKeys.MINECRAFT_PATH, minecraftPath)
+    }
+  }, [minecraftPath])
+  useEffect(() => {
     if (isLoading) {
       window.serverDataApi.receiveOnce(`receiveUserSelectedMinecraftPath`, ({ canceled, newPath }) => {
         setIsLoading(false)
