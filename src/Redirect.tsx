@@ -5,5 +5,5 @@ export default function Redirect({ to }: { to: string }) {
   useEffect(() => {
     route(to, true)
   }, [to])
-  return <></>
+  return null
 }
