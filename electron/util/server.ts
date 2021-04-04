@@ -16,9 +16,7 @@ export function runCmd(cmd: string): Promise<{ stdout: string; stdin: string }> 
     })
   })
 }
-/**
- * WARNING: This should only be used in a Main process; BrowserWindow and dialog are both unavailable in a Renderer process, and this function will fail.
- */
+// WARNING: This should only be used in a Main process; BrowserWindow and dialog are both unavailable in a Renderer process, and this function will fail.
 export async function getUserSelectedMinecraftPath(): Promise<{ canceled: boolean; newPath: string }> {
   const currentWindow = BrowserWindow.getFocusedWindow()
   if (!currentWindow) return { canceled: true, newPath: `` }
