@@ -1,6 +1,6 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
-import { getUserSelectedMinecraftPath } from './util/server'
+import { setupIpcMainListeners } from './util/server'
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -33,6 +33,7 @@ function createWindow() {
 }
 app.whenReady().then(() => {
   createWindow()
+  setupIpcMainListeners()
   app.on(`activate`, () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
@@ -42,51 +43,5 @@ app.whenReady().then(() => {
 app.on(`window-all-closed`, () => {
   if (process.platform !== `darwin`) {
     app.quit()
-  }
-})
-ipcMain.on(`requestUserSelectedMinecraftPath`, async () => {
-  const newPath = await getUserSelectedMinecraftPath()
-  BrowserWindow.getFocusedWindow()?.webContents.send(`receiveUserSelectedMinecraftPath`, newPath)
-})
-ipcMain.on(`requestWindowMinimize`, () => {
-  const currentWindow = BrowserWindow.getFocusedWindow()
-  try {
-    currentWindow?.minimize()
-    currentWindow?.webContents.send(`receiveWindowMinimizeResult`, { success: true })
-  } catch (err) {
-    currentWindow?.webContents.send(`receiveWindowMinimizeResult`, { success: false, err })
-  }
-})
-ipcMain.on(`requestWindowToggleMaximize`, () => {
-  const currentWindow = BrowserWindow.getFocusedWindow()
-  try {
-    if (currentWindow?.isMaximized()) {
-      currentWindow.unmaximize()
-    } else if (currentWindow) {
-      currentWindow.maximize()
-    }
-    currentWindow?.webContents.send(`receiveWindowToggleMaximizeResult`, { success: true })
-  } catch (err) {
-    currentWindow?.webContents.send(`receiveWindowToggleMaximizeResult`, { success: false, err })
-  }
-})
-ipcMain.on(`requestWindowClose`, () => {
-  const currentWindow = BrowserWindow.getFocusedWindow()
-  try {
-    currentWindow?.close()
-  } catch (err) {
-    currentWindow?.webContents.send(`receiveWindowCloseResult`, { success: false, err })
-  }
-})
-ipcMain.on(`requestWindowMaximizedStatus`, () => {
-  const currentWindow = BrowserWindow.getFocusedWindow()
-  try {
-    const isMaximized = currentWindow?.isMaximized()
-    if (typeof isMaximized !== `boolean`) {
-      throw new Error(`isMaximized could not be determined`)
-    }
-    currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized })
-  } catch (err) {
-    currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: false, err })
   }
 })

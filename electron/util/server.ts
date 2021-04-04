@@ -1,5 +1,5 @@
 import { exec } from 'child_process'
-import { BrowserWindow, dialog } from 'electron'
+import { BrowserWindow, dialog, ipcMain } from 'electron'
 import { homedir } from 'os'
 import * as path from 'path'
 
@@ -30,6 +30,54 @@ export async function getUserSelectedMinecraftPath(): Promise<{ canceled: boolea
     defaultPath: getDefaultMinecraftPath(),
   })
   return { canceled, newPath }
+}
+export function setupIpcMainListeners(): void {
+  ipcMain.on(`requestUserSelectedMinecraftPath`, async () => {
+    const newPath = await getUserSelectedMinecraftPath()
+    BrowserWindow.getFocusedWindow()?.webContents.send(`receiveUserSelectedMinecraftPath`, newPath)
+  })
+  ipcMain.on(`requestWindowClose`, () => {
+    const currentWindow = BrowserWindow.getFocusedWindow()
+    try {
+      currentWindow?.close()
+    } catch (err) {
+      currentWindow?.webContents.send(`receiveWindowCloseResult`, { success: false, err })
+    }
+  })
+  ipcMain.on(`requestWindowMaximizedStatus`, () => {
+    const currentWindow = BrowserWindow.getFocusedWindow()
+    try {
+      const isMaximized = currentWindow?.isMaximized()
+      if (typeof isMaximized !== `boolean`) {
+        throw new Error(`isMaximized could not be determined`)
+      }
+      currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized })
+    } catch (err) {
+      currentWindow?.webContents.send(`receiveWindowMaximizedStatus`, { success: false, err })
+    }
+  })
+  ipcMain.on(`requestWindowMinimize`, () => {
+    const currentWindow = BrowserWindow.getFocusedWindow()
+    try {
+      currentWindow?.minimize()
+      currentWindow?.webContents.send(`receiveWindowMinimizeResult`, { success: true })
+    } catch (err) {
+      currentWindow?.webContents.send(`receiveWindowMinimizeResult`, { success: false, err })
+    }
+  })
+  ipcMain.on(`requestWindowToggleMaximize`, () => {
+    const currentWindow = BrowserWindow.getFocusedWindow()
+    try {
+      if (currentWindow?.isMaximized()) {
+        currentWindow.unmaximize()
+      } else if (currentWindow) {
+        currentWindow.maximize()
+      }
+      currentWindow?.webContents.send(`receiveWindowToggleMaximizeResult`, { success: true })
+    } catch (err) {
+      currentWindow?.webContents.send(`receiveWindowToggleMaximizeResult`, { success: false, err })
+    }
+  })
 }
 
 // Locations based on https://minecraft.fandom.com/wiki/.minecraft#Locating_.minecraft
