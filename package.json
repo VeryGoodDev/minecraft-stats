@@ -18,6 +18,7 @@
     "@react-types/select": "^3.2.0",
     "@react-types/shared": "^3.5.0",
     "conf": "^9.0.2",
+    "phosphor-react": "^1.2.1",
     "preact": "^10.5.13",
     "preact-render-to-string": "^5.1.16",
     "preact-router": "^3.2.1",

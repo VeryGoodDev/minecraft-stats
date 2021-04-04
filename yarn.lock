@@ -3662,6 +3662,11 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
+phosphor-react@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/phosphor-react/-/phosphor-react-1.2.1.tgz#f897bef4ef022bd7162bccca3a9dd584e65d36f0"
+  integrity sha512-1AviNwceMegZWdV1Xuq5f73eiI99cKCCrjRPM1Ov49byeJQue4Nu4CzvEafIKa+mexQYWaYes3dGFUp9s0mFnw==
+
 picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
