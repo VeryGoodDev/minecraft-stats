@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
+import { configKeys } from '../electron/util/common'
 
-export function useRequestMinecraftPath(initialPath: string) {
-  const [minecraftPath, setMinecraftPath] = useState(initialPath)
+export function useRequestMinecraftPath() {
+  const [minecraftPath, setMinecraftPath] = useState<string>(
+    window.configApi.getConfigItem(configKeys.MINECRAFT_PATH) || ``
+  )
   const [isLoading, setIsLoading] = useState(false)
   const sendRequest = () => {
     setIsLoading(true)
@@ -21,6 +24,9 @@ export function useRequestMinecraftPath(initialPath: string) {
 }
 export function useSupportedVersions() {
   const [supportedVersions, setSupportedVersions] = useState<string[] | null>(null)
+  const [selectedVersion, setSelectedVersion] = useState<string>(
+    window.configApi.getConfigItem(configKeys.MINECRAFT_VERSION) || ``
+  )
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     window.configFileApi.getSupportedVersions().then((versions) => {
@@ -28,16 +34,37 @@ export function useSupportedVersions() {
       setIsLoading(false)
     })
   }, [])
-  return { isLoading, supportedVersions }
+  const updateSelectedVersion = useCallback((newSelection: string) => {
+    setSelectedVersion((prevSelection) => {
+      if (newSelection !== prevSelection) {
+        window.configApi.setConfigItem(configKeys.MINECRAFT_VERSION, newSelection)
+        return newSelection
+      }
+      return prevSelection
+    })
+  }, [])
+  return { isLoading, supportedVersions, selectedVersion, updateSelectedVersion }
 }
 export function useSupportedLanguages() {
   const [supportedLanguages, setSupportedLanguages] = useState<Record<string, LanguageInfo> | null>(null)
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    window.configApi.getConfigItem(configKeys.LANGUAGE_PREF)
+  )
   const [isLoading, setIsLoading] = useState(true)
+  const updateSelectedLanguage = useCallback((newSelection: string) => {
+    setSelectedLanguage((prevSelection) => {
+      if (newSelection !== prevSelection) {
+        window.configApi.setConfigItem(configKeys.LANGUAGE_PREF, newSelection)
+        return newSelection
+      }
+      return prevSelection
+    })
+  }, [])
   useEffect(() => {
     window.configFileApi.getSupportedLanguages().then((languages) => {
       setSupportedLanguages(languages)
       setIsLoading(false)
     })
   }, [])
-  return { isLoading, supportedLanguages }
+  return { isLoading, supportedLanguages, selectedLanguage, updateSelectedLanguage }
 }
