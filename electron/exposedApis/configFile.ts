@@ -21,6 +21,7 @@ export function getSupportedVersions(): Promise<string[]> {
 export async function getSupportedLanguages(): Promise<Record<string, LanguageInfo>> {
   const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH) as string
   const minecraftVersion = (getConfigItem(configKeys.MINECRAFT_VERSION) as string).replace(/^(1\.\d+).*$/, `$1`)
+  if (!minecraftVersion) return Promise.resolve({})
   const languageNames: Record<string, string> = await fsPromises
     .readFile(path.resolve(__dirname, `../../electron/assets/lang-names.json`))
     .then((rawFile: Buffer) => JSON.parse(rawFile.toString()))
