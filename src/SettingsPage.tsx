@@ -16,13 +16,14 @@ const settingWrapperCss = css`
 `
 export default function SettingsPage() {
   const requestMinecraftPath = useRequestMinecraftPath()
-  const supportedVersions = useSupportedVersions(requestMinecraftPath.minecraftPath)
+  const { minecraftPath } = requestMinecraftPath
+  const supportedVersions = useSupportedVersions(minecraftPath)
   const supportedLanguages = useSupportedLanguages(supportedVersions.selectedVersion)
   useEffect(() => {
-    if (requestMinecraftPath.minecraftPath.length > 0) {
-      window.configApi.updateConfigItem(configKeys.MINECRAFT_PATH, requestMinecraftPath.minecraftPath)
+    if (minecraftPath.length > 0) {
+      window.configApi.updateConfigItem(configKeys.MINECRAFT_PATH, minecraftPath)
     }
-  }, [requestMinecraftPath.minecraftPath])
+  }, [minecraftPath])
   return (
     <>
       <Helmet title="Minecraft Stats - Settings" />
