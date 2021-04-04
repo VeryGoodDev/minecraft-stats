@@ -5,7 +5,7 @@ const preferences = new Conf({
   defaults: {
     [configKeys.MINECRAFT_PATH]: ``,
     [configKeys.MINECRAFT_VERSION]: ``,
-    [configKeys.LANGUAGE_PREF]: `en_us`,
+    [configKeys.LANGUAGE_PREF]: ``,
     [configKeys.CURRENT_LANGUAGE_STRINGS]: {},
   },
 })
@@ -35,6 +35,17 @@ export function deleteConfigItem(key: string): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
       preferences.delete(key)
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+// FIXME: Unexpose after dev work is mostly done
+export function resetConfig(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    try {
+      preferences.clear()
       resolve()
     } catch (err) {
       reject(err)

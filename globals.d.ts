@@ -7,12 +7,14 @@ interface LanguageInfo {
 declare var configApi: {
   getConfigItem<T>(key: string): T
   updateConfigItem<T>(key: string, value: T): Promise<void>
+  // FIXME: All below this comment should be removed once dev is done
   setConfigItem<T>(key: string, value: T): Promise<void>
   deleteConfigItem(): Promise<void>
+  resetConfig(): Promise<void>
 }
 declare var configFileApi: {
-  getSupportedVersions(): Promise<string[]>
-  getSupportedLanguages(): Promise<Record<string, LanguageInfo>>
+  getSupportedVersions(minecraftPath: string): Promise<string[]>
+  getSupportedLanguages(version: string): Promise<Record<string, LanguageInfo>>
 }
 declare var statFileApi: {
   getWorldNames(): string[]

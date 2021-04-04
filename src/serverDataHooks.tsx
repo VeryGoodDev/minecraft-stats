@@ -22,18 +22,18 @@ export function useRequestMinecraftPath() {
   }, [isLoading])
   return { isLoading, minecraftPath, sendRequest }
 }
-export function useSupportedVersions() {
+export function useSupportedVersions(minecraftPath: string) {
   const [supportedVersions, setSupportedVersions] = useState<string[] | null>(null)
   const [selectedVersion, setSelectedVersion] = useState<string>(
     window.configApi.getConfigItem(configKeys.MINECRAFT_VERSION) || ``
   )
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
-    window.configFileApi.getSupportedVersions().then((versions) => {
+    window.configFileApi.getSupportedVersions(minecraftPath).then((versions) => {
       setSupportedVersions(versions)
       setIsLoading(false)
     })
-  }, [])
+  }, [minecraftPath])
   const updateSelectedVersion = useCallback((newSelection: string) => {
     setSelectedVersion((prevSelection) => {
       if (newSelection !== prevSelection) {
@@ -45,7 +45,7 @@ export function useSupportedVersions() {
   }, [])
   return { isLoading, supportedVersions, selectedVersion, updateSelectedVersion }
 }
-export function useSupportedLanguages() {
+export function useSupportedLanguages(version: string) {
   const [supportedLanguages, setSupportedLanguages] = useState<Record<string, LanguageInfo> | null>(null)
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     window.configApi.getConfigItem(configKeys.LANGUAGE_PREF)
@@ -61,10 +61,11 @@ export function useSupportedLanguages() {
     })
   }, [])
   useEffect(() => {
-    window.configFileApi.getSupportedLanguages().then((languages) => {
+    setIsLoading(true)
+    window.configFileApi.getSupportedLanguages(version).then((languages) => {
       setSupportedLanguages(languages)
       setIsLoading(false)
     })
-  }, [])
+  }, [version])
   return { isLoading, supportedLanguages, selectedLanguage, updateSelectedLanguage }
 }

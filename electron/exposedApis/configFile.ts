@@ -12,16 +12,20 @@ interface IndexFileStructure {
   objects: Record<string, IndexItem>
 }
 
-export function getSupportedVersions(): Promise<string[]> {
-  const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH) as string
+export function getSupportedVersions(minecraftPath: string): Promise<string[]> {
+  if (!minecraftPath) {
+    return Promise.resolve([])
+  }
   return fsPromises
     .readdir(path.join(minecraftPath, `/versions`))
     .then((versions) => versions.filter((version) => isVanillaVersion(version)))
 }
-export async function getSupportedLanguages(): Promise<Record<string, LanguageInfo>> {
+export async function getSupportedLanguages(version: string): Promise<Record<string, LanguageInfo>> {
+  if (!version) {
+    return Promise.resolve({})
+  }
   const minecraftPath = getConfigItem(configKeys.MINECRAFT_PATH) as string
-  const minecraftVersion = (getConfigItem(configKeys.MINECRAFT_VERSION) as string).replace(/^(1\.\d+).*$/, `$1`)
-  if (!minecraftVersion) return Promise.resolve({})
+  const minecraftVersion = version.replace(/^(1\.\d+).*$/, `$1`)
   const languageNames: Record<string, string> = await fsPromises
     .readFile(path.resolve(__dirname, `../../electron/assets/lang-names.json`))
     .then((rawFile: Buffer) => JSON.parse(rawFile.toString()))
