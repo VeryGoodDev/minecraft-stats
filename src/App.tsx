@@ -5,6 +5,7 @@ import AppNav from './AppNav'
 import injectGlobalStyles from './injectGlobalStyles'
 
 const InitialPage = lazy(() => import(`./InitialPage`))
+const OnboardingPage = lazy(() => import(`./OnboardingPage`))
 const SettingsPage = lazy(() => import(`./SettingsPage`))
 
 injectGlobalStyles()
@@ -17,6 +18,7 @@ export default function App() {
         <Suspense fallback="Loading...">
           <Router>
             <Route default component={InitialPage} />
+            <Route path="/onboarding" component={OnboardingPage} />
             <Route path="/settings" component={SettingsPage} />
             {/* <Route path="/world-selection" /> */}
             {/* <Route path="/stats/:world" /> */}
