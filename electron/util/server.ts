@@ -1,19 +1,27 @@
+import type { Server } from 'node:http'
 import { exec } from 'child_process'
-import { BrowserWindow, dialog, ipcMain } from 'electron'
+import { readFileSync } from 'fs'
+import { createServer as createHttpServer } from 'http'
 import { homedir } from 'os'
 import * as path from 'path'
+import { BrowserWindow, dialog, ipcMain } from 'electron'
 
 const HOME_DIR = homedir()
 
-export function runCmd(cmd: string): Promise<{ stdout: string; stdin: string }> {
+export function startServer(): Promise<Server> {
   return new Promise((resolve, reject) => {
-    exec(cmd, { windowsHide: true }, (err, stdout, stdin) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve({ stdout, stdin })
-      }
+    const html = readFileSync(path.resolve(`./src/index.html`))
+    const server = createHttpServer((req, res) => {
+      res.end(html)
     })
+    server.once(`error`, (err) => {
+      reject(err)
+    })
+    server.once(`listening`, () => {
+      resolve(server)
+    })
+    // No port specified, so Node will just open the server on some open port
+    server.listen()
   })
 }
 // WARNING: This should only be used in a Main process; BrowserWindow and dialog are both unavailable in a Renderer process, and this function will fail.
@@ -28,6 +36,17 @@ export async function getUserSelectedMinecraftPath(): Promise<{ canceled: boolea
     defaultPath: getDefaultMinecraftPath(),
   })
   return { canceled, newPath }
+}
+export function runCmd(cmd: string): Promise<{ stdout: string; stdin: string }> {
+  return new Promise((resolve, reject) => {
+    exec(cmd, { windowsHide: true }, (err, stdout, stdin) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve({ stdout, stdin })
+      }
+    })
+  })
 }
 export function setupIpcMainListeners(): void {
   ipcMain.on(`requestUserSelectedMinecraftPath`, async () => {

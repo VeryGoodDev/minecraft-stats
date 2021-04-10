@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import electronReload from 'electron-reload'
 import * as path from 'path'
-import { setupIpcMainListeners } from './util/server'
+import { setupIpcMainListeners, startServer } from './util/server'
 
 electronReload(path.join(`./build/**/*.js`))
 function createWindow() {
@@ -14,6 +14,8 @@ function createWindow() {
       preload: path.join(__dirname, `./preload.js`),
       enableRemoteModule: false,
       contextIsolation: true,
+      // This is false by default for the past several Electron versions, but I'd rather explicitly set it anyways just in case it ever changes, isn't assumed, etc.
+      nodeIntegration: false,
     },
     title: `Minecraft Stats`,
     titleBarStyle: `hidden`,
@@ -33,7 +35,8 @@ function createWindow() {
     win.webContents.send(`receiveWindowMaximizedStatus`, { success: true, isMaximized: false })
   })
 }
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // const server = await startServer()
   createWindow()
   setupIpcMainListeners()
   app.on(`activate`, () => {

@@ -7,3 +7,6 @@ export const configKeys = {
 export function isVanillaVersion(version: string): boolean {
   return /^1\.\d+(\.\d+)?$/.test(version)
 }
+export function random(min: number, max: number): number {
+  return min + Math.ceil(Math.random() * (max - min))
+}
