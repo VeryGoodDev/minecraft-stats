@@ -66,6 +66,7 @@
           "@typescript-eslint"
         ],
         "rules": {
+          "no-await-in-loop": "off",
           "no-undef": "off",
           "no-use-before-define": "off",
           "no-unused-vars": "off",
