@@ -46,3 +46,4 @@ declare interface MinecraftStatsRaw {
   stats: MinecraftStats
   DataVersion: number
 }
+declare module 'electron-reload'

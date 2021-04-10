@@ -1,7 +1,9 @@
 import { app, BrowserWindow } from 'electron'
+import electronReload from 'electron-reload'
 import * as path from 'path'
 import { setupIpcMainListeners } from './util/server'
 
+electronReload(path.join(`./build/**/*.js`))
 function createWindow() {
   const win = new BrowserWindow({
     width: 900,
