@@ -4,5 +4,5 @@ const runBuild = require(`./esbuild`)
 const start = performance.now()
 runBuild({ watch: false }).then(() => {
   const bundleTime = (performance.now() - start).toFixed(4)
-  console.log(`Building all bundles took ${bundleTime} milliseconds`)
+  console.log(`Built all bundles in ${bundleTime} milliseconds`)
 })
