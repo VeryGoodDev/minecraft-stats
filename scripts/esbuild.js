@@ -1,10 +1,11 @@
 const esbuild = require(`esbuild`)
 const aliasPlugin = require(`esbuild-plugin-alias`)
 const { performance } = require(`perf_hooks`)
-const { esbuildLog } = require(`./util`)
+const { esbuildLog, combineConfigs } = require(`./util`)
 
 /**
  * @typedef {import('esbuild').BuildOptions} BuildOptions
+ * @typedef {import('esbuild').BuildResult} BuildResult
  */
 function logRebuild(buildName) {
   return (error) => {
@@ -83,19 +84,23 @@ const electronPreloadConfig = {
   },
 }
 
-module.exports = function runBuild() {
+/**
+ * @param {BuildOptions} overrides Any overrides to pass to all configs
+ * @returns {Promise<BuildResult[]>}
+ */
+module.exports = function runBuild(overrides = {}) {
   const buildStart = performance.now()
   const [env] = process.argv.slice(2)
   const appConfig = env === `--prod` ? prodAppConfig : devAppConfig
-  const appBuild = esbuild.build(appConfig).then((result) => {
+  const appBuild = esbuild.build(combineConfigs(appConfig, overrides)).then((result) => {
     esbuildLog(`App`, buildStart)
     return result
   })
-  const electronMainBuild = esbuild.build(electronMainConfig).then((result) => {
+  const electronMainBuild = esbuild.build(combineConfigs(electronMainConfig, overrides)).then((result) => {
     esbuildLog(`Electron:main`, buildStart)
     return result
   })
-  const electronPreloadBuild = esbuild.build(electronPreloadConfig).then((result) => {
+  const electronPreloadBuild = esbuild.build(combineConfigs(electronPreloadConfig, overrides)).then((result) => {
     esbuildLog(`Electron:main`, buildStart)
     return result
   })
