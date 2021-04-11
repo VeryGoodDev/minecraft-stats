@@ -39,11 +39,6 @@ app.whenReady().then(async () => {
   // const server = await startServer()
   createWindow()
   setupIpcMainListeners()
-  app.on(`activate`, () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
-    }
-  })
 })
 app.on(`window-all-closed`, () => {
   if (process.platform !== `darwin`) {
